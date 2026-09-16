@@ -1,0 +1,14 @@
+# Vector OS
+> Your academic life, finally organized.
+
+Vector is a modern, kanban-driven task management operating system built specifically for students. It replaces the chaos of scattered notes and rigid planners with a clean, fluid interface. 
+
+Features:
+- Kanban Boards for task tracking
+- Global State Management with Zustand
+- Google Calendar Sync
+- Magic Email-to-Task
+- Supabase Postgres & Auth
+- Next.js 14 App Router
+
+For more details on architecture and full features, see /llms-full.txt.
