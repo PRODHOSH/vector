@@ -53,7 +53,7 @@ export default function PrivacyPage() {
           <p>We have implemented appropriate technical and organizational security measures designed to protect the security of any personal information we process, including secure databases hosted via Supabase.</p>
 
           <h2 className="text-xl font-semibold text-black mt-10 mb-4">6. Contact Us</h2>
-          <p>If you have questions or comments about this notice, you may email us at privacy@vector.prodhosh.me.</p>
+          <p>If you have questions or comments about this notice, or any issues with the platform, you may email us at <a href="mailto:support@prodhosh.me" className="text-blue-600 hover:underline">support@prodhosh.me</a>.</p>
         </div>
       </main>
 

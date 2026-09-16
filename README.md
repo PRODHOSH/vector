@@ -52,6 +52,12 @@ We went beyond basic CRUD to build features that actually save you time:
 
 <br />
 
+<div align="center">
+  <img src="public/email-notifications.png" alt="Email Notifications" width="80%" style="border-radius: 8px; margin-top: 24px;" />
+</div>
+
+<br />
+
 ## Tech Stack
 
 We chose a modern, edge-ready stack optimized for speed and developer experience.

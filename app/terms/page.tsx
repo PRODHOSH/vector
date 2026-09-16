@@ -49,6 +49,9 @@ export default function TermsPage() {
 
           <h2 className="text-xl font-semibold text-black mt-10 mb-4">6. Changes to Terms</h2>
           <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+
+          <h2 className="text-xl font-semibold text-black mt-10 mb-4">7. Contact Us</h2>
+          <p>If you have any questions about these Terms, or any issues with the platform, please contact us at <a href="mailto:support@prodhosh.me" className="text-blue-600 hover:underline">support@prodhosh.me</a>.</p>
         </div>
       </main>
 
