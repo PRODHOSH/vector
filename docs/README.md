@@ -1,6 +1,9 @@
 # API Documentation
 
+> **Live interactive docs:** [https://vector.prodhosh.me/api-docs](https://vector.prodhosh.me/api-docs)
+
 This folder contains the backend API documentation for **Vector OS**.
+
 
 ## Files
 

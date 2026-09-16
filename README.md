@@ -2,6 +2,14 @@
   <img src="public/vector-dashboard-logo.png" alt="Vector OS Logo" width="250" />
   <br />
   <p>Your academic life, finally organized. A modern, kanban-driven operating system for students.</p>
+  <br />
+  <a href="https://vector.prodhosh.me">
+    <img src="https://img.shields.io/badge/Live%20App-vector.prodhosh.me-111111?style=for-the-badge&logo=vercel&logoColor=white" alt="Live App" />
+  </a>
+  &nbsp;
+  <a href="https://vector.prodhosh.me/api-docs">
+    <img src="https://img.shields.io/badge/API%20Docs-Swagger%20UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="API Docs" />
+  </a>
 </div>
 
 <br />
