@@ -156,33 +156,33 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
 
   return (
     <PageTransition className="flex flex-col h-full gap-6">
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="flex gap-1 bg-muted p-1 rounded-lg">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="flex gap-1 bg-muted p-1 rounded-lg shrink-0">
             <Button variant={viewType === "kanban" ? "default" : "ghost"} size="icon" className="h-8 w-8" onClick={() => setViewType("kanban")}><LayoutGrid className="h-4 w-4" /></Button>
             <Button variant={viewType === "list" ? "default" : "ghost"} size="icon" className="h-8 w-8" onClick={() => setViewType("list")}><List className="h-4 w-4" /></Button>
           </div>
-          <div className="relative w-full max-w-[200px]">
+          <div className="relative w-full sm:max-w-[200px] flex-1">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search tasks..." className="pl-8 h-8 text-sm" />
+            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search tasks..." className="pl-8 h-8 text-sm w-full" />
           </div>
         </div>
 
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger render={<Button />}>
+          <DialogTrigger render={<Button className="w-full sm:w-auto" />}>
             <Plus className="h-4 w-4 mr-2" /> New Task
           </DialogTrigger>
-          <DialogContent className="max-w-xl">
+          <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create New Task</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreateTask} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2 col-span-2">
+                <div className="space-y-2 col-span-1 md:col-span-2">
                   <Label>Task Title</Label>
                   <Input name="title" required placeholder="e.g. Finish math assignment" />
                 </div>
-                <div className="space-y-2 col-span-2">
+                <div className="space-y-2 col-span-1 md:col-span-2">
                   <Label>Description</Label>
                   <Textarea name="description" placeholder="Add any details..." className="h-20 resize-none" />
                 </div>
@@ -212,7 +212,7 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
       </div>
 
       {filteredTasks.length === 0 ? (
-        <div className="flex flex-col items-center justify-center p-16 border border-dashed border-border rounded-lg text-center bg-card">
+        <div className="flex flex-col items-center justify-center p-8 sm:p-16 border border-dashed border-border rounded-lg text-center bg-card">
           <CheckCircle2 className="h-8 w-8 text-muted-foreground mb-4" />
           <h3 className="text-xl font-semibold mb-2">{search ? "No matching tasks" : "No tasks yet"}</h3>
           <p className="text-muted-foreground max-w-md text-sm mb-6">
@@ -225,7 +225,7 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
           )}
         </div>
       ) : viewType === "kanban" ? (
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 overflow-x-auto min-h-[400px]">
+        <div className="flex-1 flex flex-row md:grid md:grid-cols-3 gap-4 overflow-x-auto snap-x snap-mandatory min-h-[400px] pb-4 hide-scrollbar">
           {COLUMNS.map(({ status, icon: Icon, accent }) => (
             <div
               key={status}
@@ -233,7 +233,7 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
               onDragLeave={() => setDragOverColumn((prev) => (prev === status ? null : prev))}
               onDrop={() => handleDrop(status)}
               className={cn(
-                "flex flex-col gap-3 rounded-lg border border-border bg-muted/20 p-3 min-h-[300px] h-full max-h-[calc(100vh-14rem)] transition-colors",
+                "flex flex-col gap-3 rounded-lg border border-border bg-muted/20 p-3 min-h-[300px] h-full max-h-[calc(100vh-14rem)] transition-colors shrink-0 w-[85vw] sm:w-[320px] md:w-auto snap-center md:snap-align-none",
                 dragOverColumn === status && "border-primary/50 bg-primary/5"
               )}
             >

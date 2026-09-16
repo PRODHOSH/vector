@@ -6,11 +6,14 @@ import Link from "next/link";
 import { ChevronRight, LayoutGrid, CalendarDays, BarChart3, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { LandingMockupSection } from "@/components/ui/landing-mockup-section";
 import { Integrations } from "@/components/ui/integrations-4-2";
+import { NoveltyBento } from "@/components/ui/novelty-bento";
+import { LandingScrollSection } from "@/components/ui/landing-scroll-section";
 
 export default function LandingPage() {
   return (
-    <div className="bg-[#f9fafb] text-[#0a1b33] min-h-screen font-sans selection:bg-blue-100 selection:text-blue-900 pb-24">
+    <div className="bg-[#f9fafb] text-[#0a1b33] min-h-screen font-sans selection:bg-blue-100 selection:text-blue-900">
       {/* Main Hero Container */}
       <div className="relative w-full max-w-[1400px] mx-auto mt-4 md:mt-6 rounded-[48px] bg-white border border-slate-200/50 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.03)] overflow-hidden h-[calc(100vh-2rem)] min-h-[600px] max-h-[850px] flex flex-col">
         {/* Background Video Layer */}
@@ -78,69 +81,81 @@ export default function LandingPage() {
         </div>
       </div>
 
+      {/* Device Mockup Showcase Section */}
+      <LandingMockupSection />
+
+      {/* Sticky Scroll Section */}
+      <LandingScrollSection />
+
+      {/* Novelty Bento Section */}
+      <NoveltyBento />
+
       {/* Integrations Section */}
-      <Integrations />
-
-      {/* Features Section */}
-      <div className="max-w-[1200px] mx-auto mt-32 px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-display font-semibold mb-4">Everything you need to succeed</h2>
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto">Vector combines the best task management paradigms into one cohesive, lightning-fast application.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="group rounded-[32px] bg-white border border-slate-200/60 p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="h-12 w-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 text-blue-600 group-hover:scale-110 transition-transform">
-              <LayoutGrid className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Kanban Boards</h3>
-            <p className="text-slate-500 leading-relaxed text-sm">Visualize your workflow with drag-and-drop boards. Move assignments from To-Do to Done with satisfying speed.</p>
-          </div>
-          
-          <div className="group rounded-[32px] bg-white border border-slate-200/60 p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="h-12 w-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-6 text-emerald-600 group-hover:scale-110 transition-transform">
-              <CalendarDays className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Smart Calendar</h3>
-            <p className="text-slate-500 leading-relaxed text-sm">Never miss a deadline. Your tasks automatically sync to a beautiful, unified calendar view.</p>
-          </div>
-
-          <div className="group rounded-[32px] bg-white border border-slate-200/60 p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div className="h-12 w-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-6 text-purple-600 group-hover:scale-110 transition-transform">
-              <BarChart3 className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Analytics</h3>
-            <p className="text-slate-500 leading-relaxed text-sm">Track your productivity trends, see how many tasks you&apos;ve completed, and stay motivated to do more.</p>
-          </div>
-        </div>
+      <div className="mt-24 mb-12">
+        <Integrations />
       </div>
 
       {/* Footer */}
-      <footer className="w-full mt-32 border-t border-slate-200/60 pt-20 pb-8 flex flex-col items-center overflow-hidden">
-        {/* Giant Watermark Logo */}
-        <div className="w-full max-w-[1200px] mx-auto px-6 mb-16 flex justify-center pointer-events-none select-none opacity-[0.04]">
+      <footer className="w-full bg-white border-t border-slate-200/60 pt-20 overflow-hidden flex flex-col relative z-10">
+        <div className="w-full max-w-[1400px] mx-auto px-8 md:px-12 flex flex-col gap-12 z-20">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-8">
+            <div className="md:col-span-2 space-y-6">
+              <Image src="/vector-logo-text.png" alt="Vector" width={140} height={40} className="object-contain" />
+              <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
+                The ultimate operating system for students. Organize your assignments, master your schedule, and take control of your academic life.
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <h4 className="font-semibold text-slate-900">Product</h4>
+              <ul className="space-y-3 text-sm text-slate-500">
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Tasks</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Calendar</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Integrations</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Pricing</Link></li>
+              </ul>
+            </div>
+            
+            <div className="space-y-4">
+              <h4 className="font-semibold text-slate-900">Resources</h4>
+              <ul className="space-y-3 text-sm text-slate-500">
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Help Center</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Student Guides</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Community</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Blog</Link></li>
+              </ul>
+            </div>
+            
+            <div className="space-y-4">
+              <h4 className="font-semibold text-slate-900">Company</h4>
+              <ul className="space-y-3 text-sm text-slate-500">
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">About Us</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Careers</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</Link></li>
+                <li><Link href="#" className="hover:text-blue-600 transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row items-center justify-between pt-8 pb-4 border-t border-slate-100">
+            <p className="text-sm text-slate-400">© 2026 Vector OS. All rights reserved.</p>
+            <div className="flex gap-4 text-sm text-slate-400 mt-4 md:mt-0 relative z-20">
+              <Link href="#" className="hover:text-slate-800 transition-colors">Twitter</Link>
+              <Link href="#" className="hover:text-slate-800 transition-colors">GitHub</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Giant Watermark Logo - Absolute Bottom inside Footer */}
+        <div className="absolute bottom-0 left-0 w-full flex justify-center items-end pointer-events-none select-none z-0 overflow-hidden">
           <Image 
             src="/vector-logo-text.png" 
             alt="Vector" 
-            width={1200} 
-            height={400} 
-            className="w-full h-auto object-contain" 
+            width={2400} 
+            height={800} 
+            className="w-[120%] md:w-full max-w-[2000px] h-auto object-contain opacity-[0.03] translate-y-[30%]" 
             unoptimized 
           />
-        </div>
-        
-        {/* Bottom Links */}
-        <div className="w-full max-w-[1400px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <Image src="/icon.png" alt="Vector" width={24} height={24} className="opacity-80" />
-            <span className="font-semibold text-slate-800">Vector OS</span>
-          </div>
-          <p className="text-sm text-slate-400">© 2026 Vector. All rights reserved.</p>
-          <div className="flex gap-4 text-sm text-slate-400 font-medium">
-            <Link href="#" className="hover:text-slate-800 transition-colors">Twitter</Link>
-            <Link href="#" className="hover:text-slate-800 transition-colors">GitHub</Link>
-            <Link href="#" className="hover:text-slate-800 transition-colors">Contact</Link>
-          </div>
         </div>
       </footer>
     </div>

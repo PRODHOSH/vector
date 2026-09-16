@@ -14,6 +14,6 @@ export const useSidebar = create<SidebarStore>()(
       toggle: () => set((state) => ({ isOpen: !state.isOpen })),
       setIsOpen: (isOpen) => set({ isOpen }),
     }),
-    { name: "sindra-sidebar" }
+    { name: "vector-sidebar" }
   )
 );

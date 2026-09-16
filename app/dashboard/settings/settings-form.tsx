@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateProfile } from "@/app/actions/profile-actions";
 import { Loader2, Upload } from "lucide-react";
 
-export function SettingsForm({ initialName, initialAvatar }: { initialName: string, initialAvatar: string }) {
+export function SettingsForm({ initialName, initialAvatar, email }: { initialName: string, initialAvatar: string, email: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string>(initialAvatar);
 
@@ -49,6 +49,11 @@ export function SettingsForm({ initialName, initialAvatar }: { initialName: stri
             <Input id="avatar" name="avatar" type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
           </div>
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" name="email" value={email} disabled className="bg-muted text-muted-foreground" />
       </div>
 
       <div className="space-y-2">

@@ -7,3 +7,6 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+# Database Migrations
+When making database changes, ALWAYS generate a migration file in `supabase/migrations/` AND update `supabase/schema.sql` automatically. Do not instruct the user to run SQL manually.

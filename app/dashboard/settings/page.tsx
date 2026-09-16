@@ -36,7 +36,11 @@ export default async function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SettingsForm initialName={currentFullName} initialAvatar={currentAvatar} />
+          <SettingsForm 
+            initialName={currentFullName} 
+            initialAvatar={currentAvatar} 
+            email={user.email || ""} 
+          />
         </CardContent>
       </Card>
     </div>
