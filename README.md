@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/vector-logo-text.png" alt="Vector OS Logo" width="250" />
+  <img src="public/vector-dashboard-logo.png" alt="Vector OS Logo" width="250" />
   <br />
   <p>Your academic life, finally organized. A modern, kanban-driven operating system for students.</p>
 </div>
