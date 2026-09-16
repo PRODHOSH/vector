@@ -131,8 +131,8 @@ export default function LandingPage() {
               <ul className="space-y-3 text-sm text-slate-500">
                 <li><Link href="#" className="hover:text-blue-600 transition-colors">About Us</Link></li>
                 <li><Link href="#" className="hover:text-blue-600 transition-colors">Careers</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Terms of Service</Link></li>
+                <li><Link href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
           </div>
