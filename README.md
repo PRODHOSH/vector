@@ -39,24 +39,31 @@ We went beyond basic CRUD to build features that actually save you time:
 
 <br />
 
-<div align="center">
-  <img src="public/home-section/calendar-dashboard-laptop.png" alt="Calendar Sync" width="48%" style="border-radius: 8px; margin-right: 2%;" />
-  <img src="public/home-section/settings-dashboard-laptop.png" alt="Settings & Integrations" width="48%" style="border-radius: 8px;" />
-</div>
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="public/home-section/calendar-dashboard-laptop.png" alt="Calendar Sync" width="100%" style="border-radius: 8px;" />
+      <br /><sub><b>Smart Calendar Sync</b></sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="public/home-section/settings-dashboard-laptop.png" alt="Settings & Integrations" width="100%" style="border-radius: 8px;" />
+      <br /><sub><b>Settings & Integrations</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="public/404.png" alt="404 Page" width="100%" style="border-radius: 8px;" />
+      <br /><sub><b>Custom 404 Page</b></sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="public/email-notifications.png" alt="Email Notifications" width="100%" style="border-radius: 8px;" />
+      <br /><sub><b>Email Notifications</b></sub>
+    </td>
+  </tr>
+</table>
 
 <br />
 
-<div align="center">
-  <img src="public/404.png" alt="404 Page" width="80%" style="border-radius: 8px; margin-top: 24px;" />
-</div>
-
-<br />
-
-<div align="center">
-  <img src="public/email-notifications.png" alt="Email Notifications" width="80%" style="border-radius: 8px; margin-top: 24px;" />
-</div>
-
-<br />
 
 ## Tech Stack
 
