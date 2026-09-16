@@ -13,7 +13,7 @@ import { LandingScrollSection } from "@/components/ui/landing-scroll-section";
 
 export default function LandingPage() {
   return (
-    <div className="bg-[#f9fafb] text-[#0a1b33] min-h-screen font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="bg-[#f9fafb] text-[#0a1b33] min-h-screen font-sans selection:bg-blue-100 selection:text-blue-900 w-full relative">
       {/* Main Hero Container */}
       <div className="relative w-full max-w-[1400px] mx-auto mt-4 md:mt-6 rounded-[48px] bg-white border border-slate-200/50 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.03)] overflow-hidden h-[calc(100vh-2rem)] min-h-[600px] max-h-[850px] flex flex-col">
         {/* Background Video Layer */}
@@ -104,33 +104,36 @@ export default function LandingPage() {
               <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
                 The ultimate operating system for students. Organize your assignments, master your schedule, and take control of your academic life.
               </p>
+              
+              <div className="flex items-center gap-3 pt-4 mt-2">
+                <Image 
+                  src="https://github.com/PRODHOSH.png" 
+                  alt="PRODHOSH" 
+                  width={40} 
+                  height={40} 
+                  className="rounded-full bg-slate-100 border border-slate-200" 
+                  unoptimized 
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-slate-900">Prodhosh V S</span>
+                  <a href="https://github.com/PRODHOSH" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-500 hover:text-blue-600 transition-colors">@PRODHOSH</a>
+                </div>
+              </div>
             </div>
             
-            <div className="space-y-4">
-              <h4 className="font-semibold text-slate-900">Product</h4>
+            <div className="space-y-4 md:col-start-4">
+              <h4 className="font-semibold text-slate-900">Connect</h4>
               <ul className="space-y-3 text-sm text-slate-500">
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Tasks</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Calendar</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Integrations</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Pricing</Link></li>
+                <li><a href="https://linkedin.com/in/prodhoshvs" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">LinkedIn</a></li>
+                <li><a href="https://prodhosh.me" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">Portfolio</a></li>
+                <li><a href="https://links.prodhosh.me" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">All Links</a></li>
+                <li><a href="https://github.com/PRODHOSH" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">GitHub</a></li>
               </ul>
             </div>
             
             <div className="space-y-4">
-              <h4 className="font-semibold text-slate-900">Resources</h4>
+              <h4 className="font-semibold text-slate-900">Legal</h4>
               <ul className="space-y-3 text-sm text-slate-500">
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Help Center</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Student Guides</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Community</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Blog</Link></li>
-              </ul>
-            </div>
-            
-            <div className="space-y-4">
-              <h4 className="font-semibold text-slate-900">Company</h4>
-              <ul className="space-y-3 text-sm text-slate-500">
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">About Us</Link></li>
-                <li><Link href="#" className="hover:text-blue-600 transition-colors">Careers</Link></li>
                 <li><Link href="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link></li>
               </ul>
@@ -138,10 +141,9 @@ export default function LandingPage() {
           </div>
           
           <div className="flex flex-col md:flex-row items-center justify-between pt-8 pb-4 border-t border-slate-100">
-            <p className="text-sm text-slate-400">© 2026 Vector OS. All rights reserved.</p>
+            <p className="text-sm text-slate-400">© {new Date().getFullYear()} Vector OS. All rights reserved.</p>
             <div className="flex gap-4 text-sm text-slate-400 mt-4 md:mt-0 relative z-20">
-              <Link href="#" className="hover:text-slate-800 transition-colors">Twitter</Link>
-              <Link href="#" className="hover:text-slate-800 transition-colors">GitHub</Link>
+              <a href="https://prodhosh.me" target="_blank" rel="noopener noreferrer" className="hover:text-slate-800 transition-colors">Created by PRODHOSH</a>
             </div>
           </div>
         </div>
