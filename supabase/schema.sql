@@ -20,6 +20,8 @@ CREATE TABLE public.tasks (
   status public.task_status DEFAULT 'todo'::public.task_status NOT NULL,
   priority public.task_priority DEFAULT 'medium'::public.task_priority NOT NULL,
   due_date timestamp with time zone,
+  reminder_sent_at timestamp with time zone,
+  overdue_notified_at timestamp with time zone,
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
   updated_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );

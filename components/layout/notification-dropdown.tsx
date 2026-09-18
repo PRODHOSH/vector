@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bell, CheckSquare, CalendarClock, Megaphone, Lightbulb, User } from "lucide-react";
+import { Bell, CalendarClock, CheckSquare, AlertCircle } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +18,7 @@ export interface NotificationItem {
   id: string;
   title: string;
   message: string;
-  type: string;
+  type: 'approaching' | 'overdue';
   is_read: boolean;
   link: string;
   created_at: string;
@@ -36,86 +36,104 @@ function timeAgo(iso: string) {
 
 function iconFor(type: string) {
   switch (type) {
-    case 'task': return CheckSquare;
-    case 'event': return CalendarClock;
-    case 'idea': return Lightbulb;
-    case 'mention': return User;
-    default: return Megaphone;
+    case 'overdue': return AlertCircle;
+    case 'approaching': return CalendarClock;
+    default: return CheckSquare;
   }
 }
 
 export function NotificationDropdown() {
   const router = useRouter();
   const [items, setItems] = useState<NotificationItem[]>([]);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
   
   useEffect(() => {
-    const supabase = createClient();
-    
-    // Fetch initial notifications
-    const fetchNotifications = async () => {
+    const fetchAndDeriveNotifications = async () => {
+      const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      setUserId(user.id);
       
-      const { data } = await supabase
-        .from("notifications")
-        .select("*")
-        .eq("profile_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(20);
+      const { data: tasks } = await supabase
+        .from("tasks")
+        .select("id, title, due_date, status")
+        .eq("user_id", user.id)
+        .neq("status", "done")
+        .not("due_date", "is", null);
+
+      if (!tasks) return;
+
+      const now = new Date();
+      const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      const derived: NotificationItem[] = [];
+
+      tasks.forEach(task => {
+        const dueDate = new Date(task.due_date);
         
-      if (data) setItems(data);
+        if (dueDate < now) {
+          derived.push({
+            id: `overdue_${task.id}`,
+            title: "Task Overdue",
+            message: task.title,
+            type: "overdue",
+            is_read: false,
+            link: "/dashboard/tasks",
+            created_at: task.due_date
+          });
+        } else if (dueDate < tomorrow) {
+          derived.push({
+            id: `approaching_${task.id}`,
+            title: "Deadline Approaching",
+            message: task.title,
+            type: "approaching",
+            is_read: false,
+            link: "/dashboard/tasks",
+            created_at: new Date().toISOString() // Just show current time for approaching
+          });
+        }
+      });
+
+      // Sort by urgency (overdue first, then approaching closest to deadline)
+      derived.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+
+      // Filter by local storage
+      const dismissed: string[] = JSON.parse(localStorage.getItem('vector_dismissed_notifs') || '[]');
+      
+      const activeNotifs = derived.filter(n => !dismissed.includes(n.id));
+      
+      // Keep only top 4
+      const top4 = activeNotifs.slice(0, 4);
+      
+      setItems(top4);
+      setUnreadCount(top4.length);
     };
     
-    fetchNotifications();
-
-    // Subscribe to real-time changes
-    const channel = supabase.channel('realtime_notifications')
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'notifications'
-      }, (payload) => {
-        const newNotif = payload.new as NotificationItem;
-        setItems(prev => [newNotif, ...prev]);
-      })
-      .on('postgres_changes', {
-        event: 'UPDATE',
-        schema: 'public',
-        table: 'notifications'
-      }, (payload) => {
-        const updated = payload.new as NotificationItem;
-        setItems(prev => prev.map(item => item.id === updated.id ? updated : item));
-      })
-      .subscribe();
-      
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    fetchAndDeriveNotifications();
   }, []);
 
-  const unreadCount = items.filter(i => !i.is_read).length;
-
-  const handleMarkAsRead = async (id: string, url: string) => {
-    const supabase = createClient();
-    await supabase.from("notifications").update({ is_read: true }).eq("id", id);
-    setItems(prev => prev.map(i => i.id === id ? { ...i, is_read: true } : i));
+  const handleMarkAsRead = (id: string, url: string) => {
+    const dismissed = JSON.parse(localStorage.getItem('vector_dismissed_notifs') || '[]');
+    dismissed.push(id);
+    localStorage.setItem('vector_dismissed_notifs', JSON.stringify(dismissed));
+    
+    setItems(prev => prev.filter(i => i.id !== id));
+    setUnreadCount(prev => Math.max(0, prev - 1));
     if (url) router.push(url);
   };
 
-  const handleMarkAllAsRead = async () => {
-    if (!userId) return;
-    const supabase = createClient();
-    await supabase.from("notifications").update({ is_read: true }).eq("profile_id", userId);
-    setItems(prev => prev.map(i => ({ ...i, is_read: true })));
+  const handleMarkAllAsRead = () => {
+    const dismissed = JSON.parse(localStorage.getItem('vector_dismissed_notifs') || '[]');
+    items.forEach(i => dismissed.push(i.id));
+    localStorage.setItem('vector_dismissed_notifs', JSON.stringify(dismissed));
+    
+    setItems([]);
+    setUnreadCount(0);
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         data-mobile-tap-target
-        className="relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+        className="relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
@@ -136,9 +154,9 @@ export function NotificationDropdown() {
               {unreadCount > 0 && (
                 <button 
                   onClick={handleMarkAllAsRead}
-                  className="text-xs text-primary hover:underline font-medium"
+                  className="text-xs text-primary hover:underline font-medium cursor-pointer"
                 >
-                  Mark all read
+                  Clear all
                 </button>
               )}
             </div>
@@ -150,16 +168,17 @@ export function NotificationDropdown() {
           <DropdownMenuGroup className="max-h-[300px] overflow-y-auto">
             {items.map((item) => {
               const Icon = iconFor(item.type);
+              const isOverdue = item.type === 'overdue';
               return (
                 <DropdownMenuItem
                   key={item.id}
-                  className={`flex items-start gap-2.5 p-3 cursor-pointer ${!item.is_read ? 'bg-primary/5 border-l-2 border-primary' : ''}`}
+                  className={`flex items-start gap-3 p-3 cursor-pointer mb-1 last:mb-0 transition-colors hover:bg-accent ${isOverdue ? 'bg-destructive/5' : 'bg-primary/5'}`}
                   onClick={() => handleMarkAsRead(item.id, item.link)}
                 >
-                  <Icon className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" />
+                  <Icon className={`h-4 w-4 mt-0.5 shrink-0 ${isOverdue ? 'text-destructive' : 'text-primary'}`} />
                   <div className="flex-1 min-w-0">
-                    <div className="flex w-full items-center justify-between gap-2">
-                      <span className={`text-sm ${!item.is_read ? 'font-semibold' : 'font-medium'}`}>{item.title}</span>
+                    <div className="flex w-full items-center justify-between gap-2 mb-1">
+                      <span className={`text-sm font-semibold ${isOverdue ? 'text-destructive' : 'text-foreground'}`}>{item.title}</span>
                       <span className="text-xs text-muted-foreground shrink-0">{timeAgo(item.created_at)}</span>
                     </div>
                     <p className="text-xs text-muted-foreground line-clamp-2">{item.message}</p>
@@ -169,8 +188,9 @@ export function NotificationDropdown() {
             })}
           </DropdownMenuGroup>
         ) : (
-          <div className="p-4 text-center text-sm text-muted-foreground">
-            No notifications yet!
+          <div className="p-6 text-center flex flex-col items-center justify-center gap-2">
+            <CheckSquare className="h-8 w-8 text-muted-foreground/30" />
+            <p className="text-sm text-muted-foreground">No new notifications</p>
           </div>
         )}
       </DropdownMenuContent>
