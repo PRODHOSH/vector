@@ -25,7 +25,7 @@
 
 <br />
 
-# 🚨 THE FULL STORY IS IN `DOCUMENTATION.md` 🚨
+# THE FULL STORY IS IN `DOCUMENTATION.md`
 **We have meticulously documented the entire architecture, UI flow, video walkthroughs, database schemas, and email templates in our [DOCUMENTATION.md](./DOCUMENTATION.md) file. Please check it out for a comprehensive deep dive!**
 
 <br />
