@@ -2,18 +2,19 @@ import { NextResponse } from "next/server";
 import { google } from "googleapis";
 import { createClient } from "@/utils/supabase/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const origin = new URL(req.url).origin;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"));
+    return NextResponse.redirect(new URL("/login", origin));
   }
 
   const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/integrations/google-callback`
+    `${origin}/api/integrations/google-callback`
   );
 
   const scopes = [

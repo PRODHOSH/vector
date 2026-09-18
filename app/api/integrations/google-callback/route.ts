@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
+  const origin = url.origin;
   const code = url.searchParams.get("code");
   
   if (!code) {
@@ -20,7 +21,7 @@ export async function GET(req: Request) {
   const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/integrations/google-callback`
+    `${origin}/api/integrations/google-callback`
   );
 
   try {
@@ -44,7 +45,7 @@ export async function GET(req: Request) {
 
     // Sync immediately upon connecting
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/calendar/sync`, {
+      await fetch(`${origin}/api/calendar/sync`, {
         headers: {
           Cookie: req.headers.get("cookie") || ""
         }
