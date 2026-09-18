@@ -48,32 +48,7 @@ We went beyond basic CRUD to build features that actually save you time:
 - **Magic Email-to-Task:** Forward emails from your professors directly to your unique Vector inbox. Our backend parses the email and automatically creates a task with the correct deadline.
 - **Homepage Chatbot:** A built-in AI assistant on the landing page that can answer questions about the product, guide you through onboarding, and help you set up your first workspace.
 
-<br />
 
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <img src="public/home-section/calendar-dashboard-laptop.png" alt="Calendar Sync" width="100%" style="border-radius: 8px;" />
-      <br /><sub><b>Smart Calendar Sync</b></sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="public/home-section/settings-dashboard-laptop.png" alt="Settings & Integrations" width="100%" style="border-radius: 8px;" />
-      <br /><sub><b>Settings & Integrations</b></sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="public/404.png" alt="404 Page" width="100%" style="border-radius: 8px;" />
-      <br /><sub><b>Custom 404 Page</b></sub>
-    </td>
-    <td align="center" width="50%">
-      <img src="public/email-notifications.png" alt="Email Notifications" width="100%" style="border-radius: 8px;" />
-      <br /><sub><b>Email Notifications</b></sub>
-    </td>
-  </tr>
-</table>
-
-<br />
 
 ## Future Scope & Integrations
 
