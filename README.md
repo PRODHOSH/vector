@@ -62,6 +62,12 @@ That's why I built **Vector OS**. It gives you the best of both worlds: a comple
 - **Priority & Deadlines:** Tag tasks as High, Medium, or Low, and set firm due dates.
 - **Beautiful, Fast UI:** We use modern **shadcn/ui** components for a premium, accessible design. The dashboard updates instantly when you move things around, looking great on both desktop and mobile.
 
+### Premium User Experience
+- **Interactive Onboarding:** Built-in interactive product tours (powered by `driver.js`) that automatically guide new users through setting up their workspace and learning the ropes.
+- **Global Command Menu:** Hit `Cmd + K` (or `Ctrl + K`) from anywhere in the app to instantly search tasks or navigate between pages using a sleek command palette.
+- **Dark Mode Support:** Full support for system-preference or manual toggling of light and dark themes so your eyes don't burn while pulling all-nighters.
+- **Smooth Animations:** We use `framer-motion` for fluid page transitions, drag-and-drop mechanics, and beautiful micro-interactions.
+
 ### Admin Capabilities
 - **Admin Dashboard:** A dedicated, protected route (`/admin`) only accessible by users with the `is_admin` database flag.
 - **Data Visualization:** We use **Recharts** to beautifully visualize user growth and task completion statistics directly in the admin panel.
