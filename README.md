@@ -64,15 +64,46 @@ Because our architecture is built to support scalable OAuth integrations, we are
 
 We chose a modern, edge-ready stack optimized for speed and developer experience.
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS + Framer Motion
-- **Components:** Radix UI / Base UI
-- **Database:** PostgreSQL (via Supabase)
-- **Auth:** Supabase Auth
-- **State Management:** Zustand / React Context
-- **Cron Jobs:** Vercel Cron (for automated email alerts)
-- **Email:** Resend API (with custom HTML templates)
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" width="25%">
+        <img src="https://skillicons.dev/icons?i=nextjs,react" width="96" alt="Next.js & React" /><br>
+        <b>Next.js 14 & React</b>
+      </td>
+      <td align="center" width="25%">
+        <img src="https://skillicons.dev/icons?i=ts" width="48" alt="TypeScript" /><br>
+        <b>TypeScript</b>
+      </td>
+      <td align="center" width="25%">
+        <img src="https://skillicons.dev/icons?i=tailwind" width="48" alt="Tailwind CSS" /><br>
+        <b>Tailwind CSS</b>
+      </td>
+      <td align="center" width="25%">
+        <img src="https://skillicons.dev/icons?i=supabase,postgres" width="96" alt="Supabase & Postgres" /><br>
+        <b>Supabase & PostgreSQL</b>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" width="25%">
+        <img src="https://skillicons.dev/icons?i=vercel" width="48" alt="Vercel" /><br>
+        <b>Vercel Crons</b>
+      </td>
+      <td align="center" width="25%">
+        <img src="https://skillicons.dev/icons?i=git,github" width="96" alt="Git & GitHub" /><br>
+        <b>Git & GitHub</b>
+      </td>
+      <td align="center" width="25%">
+        <img src="https://img.shields.io/badge/Zustand-4A3E3D?style=for-the-badge&logo=react&logoColor=white" style="margin-top: 10px;" alt="Zustand" /><br>
+        <b>Zustand</b>
+      </td>
+      <td align="center" width="25%">
+        <img src="https://img.shields.io/badge/Resend-000000?style=for-the-badge&logo=minutemailer&logoColor=white" style="margin-top: 10px;" alt="Resend" /><br>
+        <b>Resend API</b>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ## Architecture
 
