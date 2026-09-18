@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     
     const { data: tasks, error: tasksErr } = await supabase
       .from('tasks')
-      .select('id, user_id, status')
+      .select('id, user_id, status, title')
       .gte('updated_at', sevenDaysAgo);
 
     if (tasksErr) throw tasksErr;
@@ -37,19 +37,19 @@ export async function GET(req: Request) {
 
     for (const profile of profiles) {
       const userTasks = tasks?.filter(t => t.user_id === profile.id) || [];
-      const completedCount = userTasks.filter(t => t.status === 'done').length;
-      const pendingCount = userTasks.filter(t => t.status !== 'done').length;
+      const completedTasks = userTasks.filter(t => t.status === 'done');
+      const pendingTasks = userTasks.filter(t => t.status !== 'done');
 
       // Only send if they had activity this week or have pending tasks
-      if (completedCount > 0 || pendingCount > 0) {
+      if (completedTasks.length > 0 || pendingTasks.length > 0) {
         emailsToSend.push(
           sendEmail({
             to: profile.email!,
-            subject: "Your Weekly Vector OS Wrap-up 📊",
+            subject: "Your Weekly Vector OS Wrap-up 🚀",
             html: getWeeklyReportEmailHtml({
               userName: profile.full_name || "Student",
-              completedCount,
-              pendingCount,
+              completedTasks: completedTasks.map(t => t.title),
+              pendingTasks: pendingTasks.map(t => t.title),
             }),
           })
         );
