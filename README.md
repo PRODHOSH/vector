@@ -25,6 +25,11 @@
 
 <br />
 
+# 🚨 THE FULL STORY IS IN `DOCUMENTATION.md` 🚨
+**We have meticulously documented the entire architecture, UI flow, video walkthroughs, database schemas, and email templates in our [DOCUMENTATION.md](./DOCUMENTATION.md) file. Please check it out for a comprehensive deep dive!**
+
+<br />
+
 <div align="center" style="display: flex; align-items: flex-end; justify-content: center; gap: 20px;">
   <img src="public/mockup/galaxy-fold.png" alt="Galaxy Fold" width="22%" />
   <img src="public/mockup/macbook.png" alt="MacBook" width="50%" />
@@ -57,7 +62,7 @@ That's why I built **Vector OS**. It gives you the best of both worlds: a comple
 
 ### Core Task Management
 - **Full CRUD Capabilities:** Create, read, update, and delete tasks instantly.
-- **Secure Authentication & OAuth:** Built-in email/password auth via Supabase so your data stays yours. We also support seamless OAuth login flows (like Google) to make signing up frictionless.
+- **Secure Authentication & OAuth:** Built-in email/password auth via Supabase so your data stays yours. We also support seamless OAuth login flows (like Google) to make signing up frictionless. (Our OAuth consent screen is officially branded and verified in Google Cloud Platform as **"Vector"**).
 - **Simple Kanban Boards:** Drag and drop your tasks between To Do, In Progress, and Done.
 - **Priority & Deadlines:** Tag tasks as High, Medium, or Low, and set firm due dates.
 - **Beautiful, Fast UI:** We use modern **shadcn/ui** components for a premium, accessible design. The dashboard updates instantly when you move things around, looking great on both desktop and mobile.
@@ -72,6 +77,11 @@ That's why I built **Vector OS**. It gives you the best of both worlds: a comple
 - **Admin Dashboard:** A dedicated, protected route (`/admin`) only accessible by users with the `is_admin` database flag.
 - **Data Visualization:** We use **Recharts** to beautifully visualize user growth and task completion statistics directly in the admin panel.
 - **Broadcast Emails:** Admins can write and broadcast update emails to all registered students directly from the dashboard, complete with full delivery logging.
+
+### Built for the Modern Web
+- **SEO & Social Ready:** Fully configured with dynamic meta tags, descriptions, and OpenGraph (OG) images for beautiful social sharing.
+- **Indexed & Analyzed:** Connected to **Google Search Console** for search visibility, and utilizing **Vercel Analytics** & **Google Analytics** for privacy-friendly usage tracking.
+- **AI-Optimized (`llms.txt`):** We expose `/llms.txt` and `/llms-full.txt` at the root domain, making it incredibly easy for AI bots and search agents to read and index our documentation.
 
 ### Automations That Actually Help
 - **Google Calendar Sync:** Connect your Google account in settings. We use OAuth to securely pull your Google Calendar events straight into your task board and native calendar view, so you never double-book or miss a deadline.
@@ -89,6 +99,7 @@ That's why I built **Vector OS**. It gives you the best of both worlds: a comple
 Because our architecture is built to support scalable OAuth integrations, we are looking to expand our ecosystem soon while preserving our minimalist core interface:
 - **Notion Integration:** Sync rows from your Notion databases directly into your Vector OS task list.
 - **Canvas LMS:** Automatically pull in assignments and quizzes as soon as your professor posts them.
+- **Google Cloud API Dashboard:** Leverage a GCP Service Account to pull live API usage stats and display them securely in our Admin Dashboard.
 - **GitHub:** For CS students, sync assigned Issues and PR reviews.
 - **Spotify & Pomodoro:** Native widgets for focus modes with your favorite study playlists.
 
