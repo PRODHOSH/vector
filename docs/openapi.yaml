@@ -7,12 +7,12 @@ info:
     ## Architecture
     Vector OS uses a hybrid backend approach:
     - **Next.js Server Actions** handle authenticated mutations (create, update, delete tasks, profile updates). These are RPC-style calls from the client, not traditional REST endpoints.
-    - **Next.js Route Handlers** (`/api/*`) handle standard HTTP requests.
+    - **Next.js Route Handlers** (`/api/*`) handle standard HTTP requests including webhooks, cron jobs, and OAuth flows.
     - **Supabase Auth** handles all authentication flows (email/password, Google OAuth).
     - All data access is protected by **Row Level Security (RLS)** policies in Supabase Postgres.
 
     ## Authentication
-    All protected endpoints require an active Supabase session cookie (`sb-*`), which is automatically managed by the Supabase Auth client.
+    All protected endpoints require an active Supabase session cookie (`sb-*`), which is automatically managed by the Supabase Auth client. Certain cron endpoints use bearer tokens (CRON_SECRET).
 
   version: 1.0.0
   contact:
@@ -35,6 +35,12 @@ tags:
     description: Task CRUD operations (via Next.js Server Actions)
   - name: Profile
     description: User profile management (via Next.js Server Actions)
+  - name: Integrations
+    description: Third-party integrations (Google Calendar, etc.)
+  - name: Cron
+    description: Automated background jobs
+  - name: Webhooks
+    description: Inbound webhooks from external services
   - name: Utility
     description: Utility endpoints
 
@@ -49,90 +55,129 @@ paths:
       tags: [Auth]
       summary: OAuth / Email Confirmation Callback
       description: |
-        Handles the redirect after a user confirms their email or signs in via an OAuth provider (Google).
-        Supabase redirects the user here with a `code` query parameter after successful authorization.
-        The handler exchanges the code for a session and redirects to `/dashboard`.
+        Handles the redirect after a user confirms their email or signs in via an OAuth provider.
       parameters:
         - name: code
           in: query
           required: true
-          description: One-time authorization code issued by Supabase Auth.
           schema:
             type: string
-            example: "abc123xyz"
         - name: next
           in: query
           required: false
-          description: Path to redirect to after successful authentication. Defaults to `/dashboard`.
           schema:
             type: string
             default: /dashboard
-            example: /dashboard/tasks
       responses:
         "302":
-          description: Redirects to `next` path on success, or `/auth/auth-code-error` on failure.
-          headers:
-            Location:
-              schema:
-                type: string
-                example: https://vector.prodhosh.me/dashboard
-        "302 (error)":
-          description: Redirects to `/auth/auth-code-error` if the code exchange fails.
+          description: Redirects to `next` path.
+
+  # ── INTEGRATIONS ─────────────────────────────────────────
+  /api/integrations/google:
+    get:
+      tags: [Integrations]
+      summary: Initiate Google OAuth
+      description: Redirects the user to the Google OAuth consent screen for Calendar access.
+      security:
+        - supabaseSession: []
+      responses:
+        "302":
+          description: Redirects to Google consent screen.
+
+  /api/integrations/google-callback:
+    get:
+      tags: [Integrations]
+      summary: Google OAuth Callback
+      description: Exchanges Google authorization code for refresh tokens and stores them in `user_integrations`.
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "302":
+          description: Redirects to `/dashboard/settings`.
+
+  /api/integrations/google/disconnect:
+    post:
+      tags: [Integrations]
+      summary: Disconnect Google Calendar
+      description: Revokes the Google OAuth token and removes it from `user_integrations`.
+      security:
+        - supabaseSession: []
+      responses:
+        "200":
+          description: Successfully disconnected.
+
+  /api/calendar/sync:
+    post:
+      tags: [Integrations]
+      summary: Sync Google Calendar Events
+      description: Pulls events from Google Calendar and imports them as tasks into Vector OS.
+      security:
+        - supabaseSession: []
+      responses:
+        "200":
+          description: Calendar synced successfully.
+
+  # ── CRON & AUTOMATIONS ──────────────────────────────────
+  /api/cron/daily:
+    get:
+      tags: [Cron]
+      summary: Daily Deadline Reminders
+      description: Runs daily to send emails for tasks due within 24 hours or tasks that are overdue.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Emails processed successfully.
+        "401":
+          description: Unauthorized cron secret.
+
+  /api/cron/weekly:
+    get:
+      tags: [Cron]
+      summary: Weekly Wrap-up
+      description: Runs weekly (Sundays) to send a summary of completed and pending tasks.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Emails processed successfully.
+        "401":
+          description: Unauthorized cron secret.
+
+  /api/tasks/email-to-task:
+    post:
+      tags: [Webhooks]
+      summary: Inbound Email to Task
+      description: Webhook endpoint for receiving forwarded emails to automatically create tasks.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Task created from email.
 
   # ── UTILITY ─────────────────────────────────────────────
   /api/seed:
     get:
       tags: [Utility]
       summary: Seed Sample Tasks
-      description: |
-        Seeds the authenticated user's account with a set of pre-built sample tasks for demonstration purposes.
-        Only works if the user is authenticated. Safe to call multiple times (adds new tasks each call).
-
-        > **Warning:** This endpoint is intended for development/demo use only. It is not guarded by an admin key in production.
       security:
         - supabaseSession: []
       responses:
         "200":
           description: Tasks seeded successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Successfully seeded tasks!
-        "401":
-          description: User is not authenticated.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Database insert error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
 
-  # ── SERVER ACTIONS (documented as RPC) ──────────────────
-  # Next.js Server Actions are not traditional HTTP endpoints.
-  # They are invoked via POST to the page's URL with a special
-  # `Next-Action` header. They are documented here as logical
-  # operations for clarity.
-
+  # ── SERVER ACTIONS ──────────────────────────────────────
   /actions/createTask:
     post:
       tags: [Tasks]
       summary: Create Task (Server Action)
-      description: |
-        Creates a new task for the authenticated user. Invoked via Next.js Server Action (not a standard REST call).
-
-        **How it works internally:**
-        - Validates that `title` is present.
-        - Resolves the authenticated user from the server-side Supabase session.
-        - Inserts a new row into the `tasks` table with `status: "todo"`.
-        - Revalidates the dashboard, tasks, and calendar pages.
       security:
         - supabaseSession: []
       requestBody:
@@ -143,20 +188,12 @@ paths:
               $ref: "#/components/schemas/TaskFormData"
       responses:
         "200":
-          description: Task created and pages revalidated.
-        "400":
-          description: Title is required.
-        "401":
-          description: Unauthorized — no active session.
-        "500":
-          description: Supabase database error.
+          description: Task created.
 
   /actions/updateTask:
     post:
       tags: [Tasks]
       summary: Update Task (Server Action)
-      description: |
-        Updates an existing task by `id`. Only updates tasks owned by the authenticated user (enforced via `.eq("user_id", user.id)`).
       security:
         - supabaseSession: []
       requestBody:
@@ -172,31 +209,14 @@ paths:
                     id:
                       type: string
                       format: uuid
-                      description: The task UUID to update.
-                      example: "a3f1c2d4-5e6b-7c8d-9e0f-1a2b3c4d5e6f"
       responses:
         "200":
-          description: Task updated and pages revalidated.
-        "400":
-          description: Title is required.
-        "401":
-          description: Unauthorized.
-        "500":
-          description: Supabase database error.
+          description: Task updated.
 
   /actions/updateTaskStatus:
     post:
       tags: [Tasks]
       summary: Update Task Status (Server Action)
-      description: |
-        Changes only the `status` field of a task. Used by the Kanban board drag-and-drop and status dropdowns.
-
-        **Status mapping:**
-        | UI Label | DB Enum |
-        |---|---|
-        | To Do | `todo` |
-        | In Progress | `in_progress` |
-        | Done | `done` |
       security:
         - supabaseSession: []
       requestBody:
@@ -210,25 +230,17 @@ paths:
                 id:
                   type: string
                   format: uuid
-                  example: "a3f1c2d4-5e6b-7c8d-9e0f-1a2b3c4d5e6f"
                 newStatus:
                   type: string
                   enum: ["To Do", "In Progress", "Done"]
-                  example: "In Progress"
       responses:
         "200":
-          description: Status updated and pages revalidated.
-        "401":
-          description: Unauthorized.
-        "500":
-          description: Supabase database error.
+          description: Status updated.
 
   /actions/deleteTask:
     post:
       tags: [Tasks]
       summary: Delete Task (Server Action)
-      description: |
-        Permanently deletes a task by `id`. Only deletes tasks owned by the authenticated user.
       security:
         - supabaseSession: []
       requestBody:
@@ -242,25 +254,14 @@ paths:
                 id:
                   type: string
                   format: uuid
-                  example: "a3f1c2d4-5e6b-7c8d-9e0f-1a2b3c4d5e6f"
       responses:
         "200":
-          description: Task deleted and pages revalidated.
-        "401":
-          description: Unauthorized.
-        "500":
-          description: Supabase database error.
+          description: Task deleted.
 
   /actions/updateProfile:
     post:
       tags: [Profile]
       summary: Update User Profile (Server Action)
-      description: |
-        Updates the authenticated user's profile (`full_name` and optionally `avatar_url`).
-
-        If an avatar file is provided:
-        1. Uploads the file to the Supabase `avatars` storage bucket at `{user_id}/avatar.{ext}` (upsert).
-        2. Retrieves the public URL and stores it in the `profiles` table.
       security:
         - supabaseSession: []
       requestBody:
@@ -273,20 +274,12 @@ paths:
               properties:
                 full_name:
                   type: string
-                  example: "Prodhosh V S"
                 avatar:
                   type: string
                   format: binary
-                  description: Optional profile image file (jpg, png, webp).
       responses:
         "200":
-          description: Profile updated and dashboard layout revalidated.
-        "400":
-          description: Full name is required.
-        "401":
-          description: Unauthorized.
-        "500":
-          description: Avatar upload failed or database error.
+          description: Profile updated.
 
 # ─────────────────────────────────────────────────────────
 # COMPONENTS
@@ -297,9 +290,10 @@ components:
       type: apiKey
       in: cookie
       name: sb-access-token
-      description: |
-        Supabase session cookie automatically set by the Supabase Auth client after login.
-        All protected routes require this cookie to be present and valid.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Vercel Cron Secret (CRON_SECRET)
 
   schemas:
     Task:
@@ -308,39 +302,45 @@ components:
         id:
           type: string
           format: uuid
-          example: "a3f1c2d4-5e6b-7c8d-9e0f-1a2b3c4d5e6f"
         user_id:
           type: string
           format: uuid
-          example: "b2e3d4c5-6f7a-8b9c-0d1e-2f3a4b5c6d7e"
         title:
           type: string
-          example: "Finish Calculus Assignment"
         description:
           type: string
           nullable: true
-          example: "Complete chapters 4 and 5 problems from the textbook."
         status:
           type: string
           enum: [todo, in_progress, done]
-          example: todo
         priority:
           type: string
           enum: [low, medium, high]
-          example: high
         due_date:
           type: string
           format: date-time
           nullable: true
-          example: "2026-09-18T18:30:00.000Z"
+        external_source:
+          type: string
+          nullable: true
+          description: e.g., 'google_calendar'
+        external_id:
+          type: string
+          nullable: true
+        reminder_sent_at:
+          type: string
+          format: date-time
+          nullable: true
+        overdue_notified_at:
+          type: string
+          format: date-time
+          nullable: true
         created_at:
           type: string
           format: date-time
-          example: "2026-09-16T10:00:00.000Z"
         updated_at:
           type: string
           format: date-time
-          example: "2026-09-16T15:30:00.000Z"
 
     Profile:
       type: object
@@ -348,18 +348,61 @@ components:
         id:
           type: string
           format: uuid
-          description: Same as the Supabase Auth user ID.
         full_name:
           type: string
-          example: "Prodhosh V S"
         avatar_url:
           type: string
           format: uri
           nullable: true
-          example: "https://xyzproject.supabase.co/storage/v1/object/public/avatars/user-id/avatar.png"
         role:
           type: string
-          example: "student"
+        email:
+          type: string
+          nullable: true
+        is_admin:
+          type: boolean
+          default: false
+
+    UserIntegration:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        provider:
+          type: string
+          example: 'google'
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    AdminEmailLog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        admin_id:
+          type: string
+          format: uuid
+        subject:
+          type: string
+        recipients_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
 
     TaskFormData:
       type: object
@@ -367,28 +410,20 @@ components:
       properties:
         title:
           type: string
-          example: "Finish Calculus Assignment"
         description:
           type: string
-          example: "Complete chapters 4 and 5 problems."
         priority:
           type: string
           enum: [low, medium, high]
           default: medium
-          example: high
         due_date:
           type: string
-          description: Human-readable date string (fallback).
-          example: "2026-09-18"
         dueDateISO:
           type: string
           format: date-time
-          description: ISO 8601 date-time string (preferred, takes precedence over due_date).
-          example: "2026-09-18T18:30:00.000Z"
 
     Error:
       type: object
       properties:
         error:
           type: string
-          example: "Unauthorized"
