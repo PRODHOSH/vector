@@ -10,6 +10,11 @@
   <a href="https://vector.prodhosh.me/api-docs">
     <img src="https://img.shields.io/badge/API%20Docs-Swagger%20UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="API Docs" />
   </a>
+  <br /><br />
+  <p>
+    <b>Live App:</b> <a href="https://vector.prodhosh.me">vector.prodhosh.me</a> &nbsp;|&nbsp; 
+    <b>API Docs:</b> <a href="https://vector.prodhosh.me/api-docs">vector.prodhosh.me/api-docs</a>
+  </p>
 </div>
 
 <br />
@@ -46,15 +51,20 @@ We built Vector OS to be exactly what you need to stop losing track of assignmen
 ## Features
 
 ### Core Task Management
+- **Full CRUD Capabilities:** Create, read, update, and delete tasks instantly.
+- **Secure Authentication:** Built-in email/password auth via Supabase so your data stays yours.
 - **Simple Kanban Boards:** Drag and drop your tasks between To Do, In Progress, and Done.
-- **Priority & Deadlines:** Tag tasks as High, Medium, or Low, and set due dates.
-- **Fast UI:** The dashboard updates instantly when you move things around.
+- **Priority & Deadlines:** Tag tasks as High, Medium, or Low, and set firm due dates.
+- **Fast, Responsive UI:** The dashboard updates instantly when you move things around, looking great on both desktop and mobile.
 
 ### Automations That Actually Help
-- **Google Calendar Sync:** Connect your account in settings. We'll automatically pull your Google Calendar events straight into your task board so you never miss a deadline.
-- **Automated Email Reminders:** We run a daily background check to email you about approaching deadlines, overdue tasks, and a weekly wrap-up.
-- **Email-to-Task:** Forward emails from your professors directly to your unique Vector inbox. We read it and create a task for you automatically.
-- **Homepage Helper:** A simple chat assistant on the landing page to answer your questions and help you get started.
+- **Google Calendar Sync:** Connect your Google account in settings. We use OAuth to securely pull your Google Calendar events straight into your task board and native calendar view, so you never double-book or miss a deadline.
+- **Daily Deadline Reminders:** We send automated email alerts for tasks that are due within 24 hours or are overdue.
+- **Weekly Wrap-up Reports:** Every Sunday, you get an email summarizing everything you accomplished that week, so you actually get credited for your hard work! It also lists what's on deck for next week.
+- **Homepage Helper:** A simple AI chat assistant on the landing page to answer your questions and help you get started.
+
+> **Why Vercel Cron Jobs instead of GitHub Actions?**  
+> We power all of our email automations using Vercel Cron. We chose this over GitHub Actions because it's natively integrated with our Next.js API routes. It requires zero external YAML configuration, avoids cross-platform secrets management, and keeps our entire backend logic in one single codebase.
 
 
 
@@ -173,11 +183,13 @@ npm run dev
 
 Visit `http://localhost:3000` to see the app running.
 
-## API Documentation (Swagger)
+## API & Database Documentation
 
 We fully document our backend using OpenAPI (Swagger). All database schemas, endpoint parameters, and response types are clearly defined.
 
-You can view the interactive Swagger UI by visiting the `/api-docs` route in the browser, or by clicking the **API Docs** badge at the top of this README. The raw OpenAPI specification file is located at `docs/openapi.yaml`.
+You can view the interactive Swagger UI by visiting [vector.prodhosh.me/api-docs](https://vector.prodhosh.me/api-docs) in the browser. The raw OpenAPI specification file is located at `docs/openapi.yaml`.
+
+Want to see our raw database structure? You can view the complete PostgreSQL schema in the [`supabase/schema.sql`](./supabase/schema.sql) file.
 
 ## Submission Details
 
