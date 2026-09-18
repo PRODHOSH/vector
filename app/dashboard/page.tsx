@@ -69,38 +69,40 @@ export default async function Dashboard() {
         }
       />
 
-      <StaggerGrid className="grid gap-6 md:grid-cols-3">
-        <AnimatedCard>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Tasks</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-display">{pendingCount}</div>
-            </CardContent>
-          </Card>
-        </AnimatedCard>
-        <AnimatedCard>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Completed Today</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-display">{completedTodayCount}</div>
-            </CardContent>
-          </Card>
-        </AnimatedCard>
-        <AnimatedCard>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Upcoming Deadlines</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-display text-blue-500 dark:text-blue-400">{upcomingDeadlinesCount}</div>
-            </CardContent>
-          </Card>
-        </AnimatedCard>
-      </StaggerGrid>
+      <div id="dashboard-main-content">
+        <StaggerGrid className="grid gap-6 md:grid-cols-3">
+          <AnimatedCard>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Pending Tasks</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold font-display">{pendingCount}</div>
+              </CardContent>
+            </Card>
+          </AnimatedCard>
+          <AnimatedCard>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Completed Today</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold font-display">{completedTodayCount}</div>
+              </CardContent>
+            </Card>
+          </AnimatedCard>
+          <AnimatedCard>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Upcoming Deadlines</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold font-display text-blue-500 dark:text-blue-400">{upcomingDeadlinesCount}</div>
+              </CardContent>
+            </Card>
+          </AnimatedCard>
+        </StaggerGrid>
+      </div>
       
       <div className="grid gap-6">
         <Card>

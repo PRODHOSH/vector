@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { SidebarNav } from "./sidebar-nav";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,7 @@ import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 
 interface SidebarClientProps {
-  profile: { full_name: string; role: string; avatar_url?: string; accessible_modules?: string[]; position?: string; is_elevated?: boolean };
+  profile: { full_name: string; role: string; avatar_url?: string; accessible_modules?: string[]; position?: string; is_admin?: boolean };
   email: string | undefined;
   initials: string;
 }
@@ -23,7 +23,8 @@ interface SidebarClientProps {
 export function SidebarClient({ profile, email, initials }: SidebarClientProps) {
   const { isOpen, toggle } = useSidebar();
   const router = useRouter();
-  const isElevated = !!profile.is_elevated;
+  const pathname = usePathname();
+  const isAdmin = !!profile.is_admin;
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -61,11 +62,12 @@ export function SidebarClient({ profile, email, initials }: SidebarClientProps) 
         </Button>
       </div>
       <div className="flex-1 min-h-0 overflow-y-auto py-4 flex flex-col gap-1">
-        <SidebarNav accessibleModules={profile.accessible_modules} isElevated={isElevated} />
+        <SidebarNav accessibleModules={profile.accessible_modules} isAdmin={isAdmin} />
         
         <div className="px-2 flex flex-col gap-1 pt-1">
           <Link
-            href="/dashboard/settings"
+            id="tour-link-settings"
+            href={isAdmin && pathname.startsWith("/admin") ? "/admin/settings" : "/dashboard/settings"}
             className={cn(
               "flex items-center rounded-md text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200",
               isOpen ? "gap-4 px-4 py-3 text-base font-medium" : "justify-center p-3"
@@ -75,10 +77,6 @@ export function SidebarClient({ profile, email, initials }: SidebarClientProps) 
             <Settings className={cn("shrink-0", isOpen ? "h-5 w-5" : "h-6 w-6")} />
             {isOpen && <span>Settings</span>}
           </Link>
-          {isElevated && (
-            <>
-            </>
-          )}
 
           <button
             type="button"

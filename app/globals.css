@@ -217,3 +217,62 @@
   from { opacity:0; transform:translate3d(0,24px,0) }
   to { opacity:1; transform:translate3d(0,0,0) }
 }
+
+/* ── Driver.js Custom Overrides ──────────────────────────────── */
+.driver-popover {
+  background-color: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  font-family: inherit !important;
+  padding: 1.25rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+}
+.driver-popover-title {
+  font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  font-size: 1.125rem !important;
+  margin-bottom: 0.5rem !important;
+  color: var(--foreground) !important;
+}
+.driver-popover-description {
+  color: var(--muted-foreground) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+}
+.driver-popover-footer {
+  margin-top: 1.25rem !important;
+}
+.driver-popover-progress-text {
+  color: var(--muted-foreground) !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+.driver-popover-prev-btn, .driver-popover-next-btn, .driver-popover-done-btn {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border: none !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+  text-shadow: none !important;
+  padding: 0.375rem 0.75rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: opacity 0.2s !important;
+  cursor: pointer !important;
+}
+.driver-popover-prev-btn:hover, .driver-popover-next-btn:hover, .driver-popover-done-btn:hover {
+  opacity: 0.9 !important;
+}
+.driver-popover-prev-btn {
+  background-color: var(--secondary) !important;
+  color: var(--secondary-foreground) !important;
+}
+.driver-popover-close-btn {
+  color: var(--muted-foreground) !important;
+}
+.driver-popover-close-btn:hover {
+  color: var(--foreground) !important;
+}
+.driver-popover-arrow {
+  display: none !important; /* Hide arrow for cleaner modern look, or border color could be tricky with dark themes */
+}

@@ -1,8 +1,10 @@
 -- Create profiles table
 CREATE TABLE public.profiles (
   id uuid REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  email text,
   full_name text,
   avatar_url text,
+  is_admin boolean DEFAULT false,
   updated_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -59,9 +61,10 @@ LANGUAGE plpgsql
 SECURITY DEFINER SET search_path = public
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, full_name, avatar_url)
+  INSERT INTO public.profiles (id, email, full_name, avatar_url)
   VALUES (
     NEW.id,
+    NEW.email,
     COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', 'Student'),
     COALESCE(NEW.raw_user_meta_data->>'avatar_url', NEW.raw_user_meta_data->>'picture', '')
   );
@@ -107,3 +110,36 @@ CREATE POLICY "Users can update their own avatar."
 CREATE POLICY "Users can delete their own avatar."
   ON storage.objects FOR DELETE
   USING (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+-- Create admin_email_logs table
+CREATE TABLE public.admin_email_logs (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  admin_id uuid REFERENCES public.profiles(id) ON DELETE SET NULL,
+  to_email text NOT NULL,
+  subject text NOT NULL,
+  status text NOT NULL CHECK (status IN ('success', 'failed')),
+  error_message text,
+  created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS for admin_email_logs
+ALTER TABLE public.admin_email_logs ENABLE ROW LEVEL SECURITY;
+
+-- Policies for admin_email_logs
+CREATE POLICY "Admins can view email logs"
+  ON public.admin_email_logs FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid() AND profiles.is_admin = true
+    )
+  );
+
+CREATE POLICY "Admins can insert email logs"
+  ON public.admin_email_logs FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid() AND profiles.is_admin = true
+    )
+  );

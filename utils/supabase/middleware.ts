@@ -43,9 +43,16 @@ export async function updateSession(request: NextRequest) {
   }
 
   // If user is logged in and trying to access login page, redirect to dashboard
-  if (user && request.nextUrl.pathname.startsWith("/login")) {
+  if (user && request.nextUrl.pathname === "/login") {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  // If user is logged in as admin and tries to access admin login, redirect to admin
+  if (user && request.nextUrl.pathname === "/admin/login") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin";
     return NextResponse.redirect(url);
   }
 

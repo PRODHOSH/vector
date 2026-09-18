@@ -11,7 +11,7 @@ export async function Sidebar() {
     avatar_url: "",
     accessible_modules: ["dashboard", "tasks", "calendar", "settings"],
     status: "Active",
-    is_elevated: false,
+    is_admin: false,
   };
 
   if (user) {
@@ -24,6 +24,7 @@ export async function Sidebar() {
     if (profileData) {
       profile.full_name = profileData.full_name || user.user_metadata?.full_name || user.user_metadata?.name || profile.full_name;
       profile.avatar_url = profileData.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || profile.avatar_url;
+      profile.is_admin = !!profileData.is_admin;
     } else {
       profile.full_name = user.user_metadata?.full_name || user.user_metadata?.name || profile.full_name;
       profile.avatar_url = user.user_metadata?.avatar_url || user.user_metadata?.picture || profile.avatar_url;
