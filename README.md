@@ -149,7 +149,7 @@ npm install
 ```
 
 3. Set up Supabase
-Create a new Supabase project and run the provided SQL queries in `supabase/schema.sql` and `supabase/seed.sql` to set up your tables and initial data.
+Create a new Supabase project and run the provided SQL queries in `supabase/schema.sql` to set up your tables.
 
 4. Set up Environment Variables
 Copy `.env.local.example` to `.env.local` and fill in your Supabase URL and Anon Key.
