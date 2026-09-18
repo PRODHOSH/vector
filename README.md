@@ -34,7 +34,7 @@
 <br />
 
 ## Table of Contents
-- [Why We Built This](#why-we-built-this)
+- [Why I Built This](#why-i-built-this)
 - [Features](#features)
 - [Future Plans](#future-plans)
 - [Tech Stack](#tech-stack)
@@ -42,11 +42,16 @@
 - [API Documentation (Swagger)](#api-documentation-swagger)
 - [Running Locally](#running-locally)
 
-## Why We Built This
+## Why I Built This
 
-Most student planners are just too complicated. We spend hours setting up the "perfect system" only to abandon it a week later because it takes too much effort to maintain. 
+As a student, I noticed a frustrating pattern when trying to organize my academic life. The current solutions on the market generally fall into two extremes:
 
-We built Vector OS to be exactly what you need to stop losing track of assignments and just get work done. No bloat, no confusing setups. Just a simple Kanban board, a calendar, and some smart automations that do the heavy lifting for you.
+1. **They are too expensive:** Any app that has genuinely useful integrations (like Google Calendar sync, AI features, or smart email reminders) hides them behind a pricey premium subscription that most students can't justify.
+2. **They are too complicated:** Free tools (like Notion or Obsidian) are incredibly powerful, but they are completely blank canvases. We end up spending 5 hours setting up the "perfect" database with 50 custom properties, only to abandon it a week later because it requires too much daily maintenance.
+
+I just wanted a free, smart tool to track my assignments effortlessly. 
+
+That's why I built **Vector OS**. It gives you the best of both worlds: a completely free, minimalist Kanban board that's stupid-simple to use, but supercharged under the hood with premium automations (like automatic calendar syncing and weekly email reports) that do the heavy lifting for you.
 
 ## Features
 
