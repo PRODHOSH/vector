@@ -28,29 +28,37 @@
 
 <br />
 
-## The Philosophy: Less is More
+## Table of Contents
+- [Why We Built This](#why-we-built-this)
+- [Features](#features)
+- [Future Plans](#future-plans)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [API Documentation (Swagger)](#api-documentation-swagger)
+- [Running Locally](#running-locally)
 
-Most student planners are either too rigid or overwhelmingly complicated. As students, we often get excited by apps with 500 features—we spend hours setting up the "perfect system"—only to abandon it a week later because it requires too much maintenance. 
+## Why We Built This
 
-We built Vector OS with a strict **minimalist philosophy**. It has exactly what you need to stop losing track of assignments and start shipping work, and absolutely nothing more. The basic minimum is all you need to stay consistent. It's built around a fluid Kanban interface, seamlessly integrated with your calendar, and packed with smart automations to get tasks out of your head as fast as possible.
+Most student planners are just too complicated. We spend hours setting up the "perfect system" only to abandon it a week later because it takes too much effort to maintain. 
+
+We built Vector OS to be exactly what you need to stop losing track of assignments and just get work done. No bloat, no confusing setups. Just a simple Kanban board, a calendar, and some smart automations that do the heavy lifting for you.
 
 ## Features
 
 ### Core Task Management
-- **Fluid Kanban Boards:** Drag and drop tasks between To Do, In Progress, and Done.
-- **Priority & Deadlines:** Tag tasks as High, Medium, or Low, and attach hard deadlines.
-- **Global State:** Optimistic UI updates mean your dashboard feels instantly responsive.
+- **Simple Kanban Boards:** Drag and drop your tasks between To Do, In Progress, and Done.
+- **Priority & Deadlines:** Tag tasks as High, Medium, or Low, and set due dates.
+- **Fast UI:** The dashboard updates instantly when you move things around.
 
-### Smart Integrations & AI
-We went beyond basic CRUD to build features that actually save you time:
-- **Google Calendar One-Way Sync:** Link your account in settings via OAuth. We automatically pull your events from Google Calendar straight into your Vector OS task board and calendar view so you never miss a deadline.
-- **Automated Email Notifications:** Built-in Vercel Cron jobs that run daily and weekly to send you beautiful HTML emails for approaching deadlines, overdue tasks, and a weekly productivity wrap-up.
-- **Magic Email-to-Task:** Forward emails from your professors directly to your unique Vector inbox. Our backend parses the email and automatically creates a task with the correct deadline.
-- **Homepage Chatbot:** A built-in AI assistant on the landing page that can answer questions about the product, guide you through onboarding, and help you set up your first workspace.
-
+### Automations That Actually Help
+- **Google Calendar Sync:** Connect your account in settings. We'll automatically pull your Google Calendar events straight into your task board so you never miss a deadline.
+- **Automated Email Reminders:** We run a daily background check to email you about approaching deadlines, overdue tasks, and a weekly wrap-up.
+- **Email-to-Task:** Forward emails from your professors directly to your unique Vector inbox. We read it and create a task for you automatically.
+- **Homepage Helper:** A simple chat assistant on the landing page to answer your questions and help you get started.
 
 
-## Future Scope & Integrations
+
+## Future Plans
 
 Because our architecture is built to support scalable OAuth integrations, we are looking to expand our ecosystem soon while preserving our minimalist core interface:
 - **Notion Integration:** Sync rows from your Notion databases directly into your Vector OS task list.
@@ -164,6 +172,12 @@ npm run dev
 ```
 
 Visit `http://localhost:3000` to see the app running.
+
+## API Documentation (Swagger)
+
+We fully document our backend using OpenAPI (Swagger). All database schemas, endpoint parameters, and response types are clearly defined.
+
+You can view the interactive Swagger UI by visiting the `/api-docs` route in the browser, or by clicking the **API Docs** badge at the top of this README. The raw OpenAPI specification file is located at `docs/openapi.yaml`.
 
 ## Submission Details
 
