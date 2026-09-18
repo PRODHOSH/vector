@@ -180,6 +180,63 @@ graph TD
     ServerActions --> AI
 ```
 
+### Database Schema
+
+Our PostgreSQL database uses Row Level Security (RLS) to ensure data is strictly isolated per user.
+
+```mermaid
+erDiagram
+    PROFILES ||--o{ TASKS : "creates"
+    PROFILES ||--o{ USER_INTEGRATIONS : "authorizes"
+    PROFILES ||--o{ ADMIN_EMAIL_LOGS : "sends"
+    
+    PROFILES {
+        uuid id PK "Matches auth.users(id)"
+        text email
+        text full_name
+        text avatar_url
+        boolean is_admin
+        timestamp updated_at
+    }
+    
+    TASKS {
+        uuid id PK
+        uuid user_id FK
+        text title
+        text description
+        enum status "todo, in_progress, done"
+        enum priority "low, medium, high"
+        timestamp due_date
+        timestamp created_at
+        timestamp updated_at
+        timestamp reminder_sent_at
+        timestamp overdue_notified_at
+        text external_source
+        text external_id
+    }
+    
+    USER_INTEGRATIONS {
+        uuid id PK
+        uuid user_id FK
+        text provider "e.g., 'google'"
+        text access_token
+        text refresh_token
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    ADMIN_EMAIL_LOGS {
+        uuid id PK
+        uuid admin_id FK
+        text to_email
+        text subject
+        text status "success, failed"
+        text error_message
+        timestamp created_at
+    }
+```
+
 ## Running Locally
 
 1. Clone the repository
