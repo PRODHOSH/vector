@@ -52,10 +52,15 @@ We built Vector OS to be exactly what you need to stop losing track of assignmen
 
 ### Core Task Management
 - **Full CRUD Capabilities:** Create, read, update, and delete tasks instantly.
-- **Secure Authentication:** Built-in email/password auth via Supabase so your data stays yours.
+- **Secure Authentication & OAuth:** Built-in email/password auth via Supabase so your data stays yours. We also support seamless OAuth login flows (like Google) to make signing up frictionless.
 - **Simple Kanban Boards:** Drag and drop your tasks between To Do, In Progress, and Done.
 - **Priority & Deadlines:** Tag tasks as High, Medium, or Low, and set firm due dates.
-- **Fast, Responsive UI:** The dashboard updates instantly when you move things around, looking great on both desktop and mobile.
+- **Beautiful, Fast UI:** We use modern **shadcn/ui** components for a premium, accessible design. The dashboard updates instantly when you move things around, looking great on both desktop and mobile.
+
+### Admin Capabilities
+- **Admin Dashboard:** A dedicated, protected route (`/admin`) only accessible by users with the `is_admin` database flag.
+- **Data Visualization:** We use **Recharts** to beautifully visualize user growth and task completion statistics directly in the admin panel.
+- **Broadcast Emails:** Admins can write and broadcast update emails to all registered students directly from the dashboard, complete with full delivery logging.
 
 ### Automations That Actually Help
 - **Google Calendar Sync:** Connect your Google account in settings. We use OAuth to securely pull your Google Calendar events straight into your task board and native calendar view, so you never double-book or miss a deadline.
@@ -95,7 +100,7 @@ We chose a modern, edge-ready stack optimized for speed and developer experience
       </td>
       <td align="center" width="25%">
         <img src="https://skillicons.dev/icons?i=tailwind" width="48" alt="Tailwind CSS" /><br>
-        <b>Tailwind CSS</b>
+        <b>Tailwind & shadcn/ui</b>
       </td>
       <td align="center" width="25%">
         <img src="https://skillicons.dev/icons?i=supabase,postgres" width="96" alt="Supabase & Postgres" /><br>
