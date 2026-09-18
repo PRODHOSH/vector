@@ -113,49 +113,68 @@ export function CalendarClient({ tasks }: { tasks: any[] }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-7 border-b border-border">
-            {WEEKDAYS.map((d, i) => (
-              <div key={i} className="p-2 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                {d}
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-7 flex-1">
-            {gridDays.map((day, i) => {
-              const inMonth = day.getMonth() === viewDate.getMonth();
-              const isToday = sameDay(day, today);
-              const isSelected = selectedDay && sameDay(day, selectedDay);
-              const dayItems = itemsByDay.get(day.toDateString()) || [];
-
-              return (
-                <button
-                  key={i}
-                  onClick={() => setSelectedDay(isSelected ? null : day)}
-                  className={cn(
-                    "flex flex-col items-start gap-1 p-2 min-h-[6rem] border-b border-r border-border text-left transition-colors",
-                    !inMonth && "bg-muted/20 text-muted-foreground/50",
-                    isSelected && "bg-primary/10",
-                    !isSelected && "hover:bg-muted/40"
-                  )}
-                >
-                  <span className={cn(
-                    "flex items-center justify-center h-6 w-6 rounded-full text-sm",
-                    isToday && "bg-primary text-primary-foreground font-semibold"
-                  )}>
-                    {day.getDate()}
-                  </span>
-                  <div className="flex flex-wrap gap-1">
-                    {dayItems.slice(0, 3).map((item, idx) => (
-                      <span
-                        key={idx}
-                        className={cn("h-1.5 w-1.5 rounded-full", item.data.status === "done" ? "bg-emerald-500" : item.data.status === "in_progress" ? "bg-blue-500" : "bg-orange-500")}
-                      />
-                    ))}
+          <div className="overflow-x-auto hide-scrollbar w-full">
+            <div className="min-w-[600px] md:min-w-full flex flex-col h-full">
+              <div className="grid grid-cols-7 border-b border-border bg-muted/20">
+                {WEEKDAYS.map((d, i) => (
+                  <div key={i} className="p-2 text-center text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {d}
                   </div>
-                </button>
-              );
-            })}
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 flex-1">
+                {gridDays.map((day, i) => {
+                  const inMonth = day.getMonth() === viewDate.getMonth();
+                  const isToday = sameDay(day, today);
+                  const isSelected = selectedDay && sameDay(day, selectedDay);
+                  const dayItems = itemsByDay.get(day.toDateString()) || [];
+
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedDay(isSelected ? null : day)}
+                      className={cn(
+                        "flex flex-col items-start gap-1 p-2 min-h-[7rem] sm:min-h-[8rem] border-b border-r border-border text-left transition-colors relative overflow-hidden",
+                        !inMonth && "bg-muted/10 text-muted-foreground/50",
+                        isSelected && "bg-primary/5",
+                        !isSelected && "hover:bg-muted/30"
+                      )}
+                    >
+                      <span className={cn(
+                        "flex items-center justify-center h-6 w-6 rounded-full text-xs font-medium mb-1",
+                        isToday ? "bg-primary text-primary-foreground font-semibold shadow-sm" : "text-muted-foreground"
+                      )}>
+                        {day.getDate()}
+                      </span>
+                      <div className="flex flex-col gap-1 w-full">
+                        {dayItems.slice(0, 3).map((item, idx) => (
+                          <div
+                            key={idx}
+                            className={cn(
+                              "px-1.5 py-0.5 text-[10px] sm:text-[11px] leading-tight rounded-sm w-full truncate border",
+                              item.data.status === "done" 
+                                ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 dark:text-emerald-400" 
+                                : item.data.status === "in_progress" 
+                                  ? "bg-blue-500/10 text-blue-600 border-blue-500/20 dark:text-blue-400" 
+                                  : "bg-orange-500/10 text-orange-600 border-orange-500/20 dark:text-orange-400"
+                            )}
+                            title={item.data.title}
+                          >
+                            {item.data.title}
+                          </div>
+                        ))}
+                        {dayItems.length > 3 && (
+                          <div className="text-[10px] text-muted-foreground font-medium pl-1 mt-0.5">
+                            +{dayItems.length - 3} more
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 

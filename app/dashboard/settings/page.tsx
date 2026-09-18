@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SettingsForm } from "./settings-form";
+import { IntegrationsCard } from "./integrations-card";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
@@ -18,6 +19,13 @@ export default async function SettingsPage() {
     .eq("id", user.id)
     .single();
 
+  const { data: integration } = await supabase
+    .from("user_integrations")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("provider", "google")
+    .single();
+
   const currentFullName = profile?.full_name || user.user_metadata?.full_name || user.user_metadata?.name || "Student";
   const currentAvatar = profile?.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || "";
 
@@ -28,21 +36,35 @@ export default async function SettingsPage() {
         description="Manage your profile and account preferences."
       />
 
-      <Card className="max-w-2xl">
-        <CardHeader>
-          <CardTitle>Profile</CardTitle>
-          <CardDescription>
-            Update your personal information.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <SettingsForm 
-            initialName={currentFullName} 
-            initialAvatar={currentAvatar} 
-            email={user.email || ""} 
-          />
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 gap-6 max-w-2xl">
+        <Card>
+          <CardHeader>
+            <CardTitle>Profile</CardTitle>
+            <CardDescription>
+              Update your personal information.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SettingsForm 
+              initialName={currentFullName} 
+              initialAvatar={currentAvatar} 
+              email={user.email || ""} 
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Integrations</CardTitle>
+            <CardDescription>
+              Connect third-party services to Vector OS.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <IntegrationsCard isConnected={!!integration} />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
