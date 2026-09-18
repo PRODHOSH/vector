@@ -228,7 +228,12 @@ export function CalendarClient({ tasks }: { tasks: any[] }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium text-sm text-foreground truncate">{item.data.title}</h4>
-                    <div className="text-xs text-muted-foreground flex items-center gap-3 mt-0.5">
+                    {item.data.description && (
+                      <p className="text-xs text-muted-foreground truncate mt-0.5 opacity-80">
+                        {item.data.description}
+                      </p>
+                    )}
+                    <div className="text-xs text-muted-foreground flex items-center gap-3 mt-1.5">
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
                         {dateFormatter.format(item.date)}

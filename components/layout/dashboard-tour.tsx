@@ -33,12 +33,12 @@ export function DashboardTour() {
           prevBtnText: '← Back',
           steps: [
             {
-              element: '#dashboard-main-content',
+              element: '#tour-step-1',
               popover: {
                 title: 'Welcome to Vector OS',
                 description: 'This is your central command center. Here you can get a quick glance at all your active tasks, pending deadlines, and general progress.',
-                side: "left",
-                align: 'start'
+                side: "top",
+                align: 'center'
               }
             },
             {

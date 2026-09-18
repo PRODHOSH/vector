@@ -48,8 +48,9 @@ export default async function Dashboard() {
   const recentTasks = allTasks.slice(0, 5);
 
   return (
-    <PageTransition className="flex flex-col gap-8">
-      <PageHeader 
+    <div id="tour-step-1">
+      <PageTransition className="flex flex-col gap-8">
+        <PageHeader 
         eyebrow="Overview"
         title={
           <div className="flex items-center gap-4">
@@ -147,6 +148,7 @@ export default async function Dashboard() {
           </CardContent>
         </Card>
       </div>
-    </PageTransition>
+      </PageTransition>
+    </div>
   );
 }
