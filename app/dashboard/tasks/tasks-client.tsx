@@ -197,7 +197,7 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
                 </div>
                 <div className="space-y-2">
                   <Label>Priority</Label>
-                  <Select name="priority" value={createPriority} onValueChange={setCreatePriority}>
+                  <Select name="priority" value={createPriority} onValueChange={(val) => val && setCreatePriority(val)}>
                     <SelectTrigger><SelectValue placeholder="Select priority" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Low">Low</SelectItem>
@@ -444,7 +444,7 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
                 </div>
                 <div className="space-y-2">
                   <Label>Priority</Label>
-                  <Select name="priority" value={editPriority} onValueChange={setEditPriority}>
+                  <Select name="priority" value={editPriority} onValueChange={(val) => val && setEditPriority(val)}>
                     <SelectTrigger><SelectValue placeholder="Select priority" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Low">Low</SelectItem>
