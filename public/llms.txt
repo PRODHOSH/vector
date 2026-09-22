@@ -7,8 +7,9 @@ Features:
 - Kanban Boards for task tracking
 - Global State Management with Zustand
 - Google Calendar Sync
-- Magic Email-to-Task
-- Supabase Postgres & Auth
+- Automated Email Reminders & Weekly Wrap-ups via Vercel Cron
+- Supabase Postgres & Auth (Email + Google OAuth)
 - Next.js 14 App Router
+- Admin Dashboard for user management and broadcast emails
 
 For more details on architecture and full features, see /llms-full.txt.

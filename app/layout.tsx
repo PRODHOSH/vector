@@ -62,6 +62,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${plusJakartaSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <meta property="og:logo" content="https://vector.prodhosh.me/vector-logo-transparent.png" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-1E0G0NGERV"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-1E0G0NGERV');
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         <ThemeProvider
           attribute="class"

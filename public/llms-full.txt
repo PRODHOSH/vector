@@ -4,20 +4,23 @@
 Vector is a Next.js 14 full-stack application that provides students with a kanban-based task manager. It is designed to be highly responsive, modern, and perfectly suited for academic task tracking.
 
 ## Tech Stack
-- Frontend: Next.js 14 (App Router), React, Tailwind CSS, Framer Motion, Radix UI.
+- Frontend: Next.js 14 (App Router), React, Tailwind CSS, Framer Motion, Radix UI & shadcn/ui.
 - Backend: Next.js Server Actions, Supabase Auth.
 - Database: Supabase PostgreSQL with Row Level Security (RLS).
 - State: Zustand, React Context.
+- Automations: Vercel Cron Jobs, Resend API.
 
 ## Features
 1. Kanban Task Management: Drag-and-drop tasks between To Do, In Progress, and Done.
 2. Deadline Tracking: Attach priorities (High, Medium, Low) and due dates to tasks.
-3. Google Calendar Integration: Two-way sync of tasks into Google Calendar.
-4. Magic Email-to-Task: Forward emails to parse into tasks via inbound webhooks.
+3. Google Calendar Integration: Two-way sync of tasks into Google Calendar via OAuth.
+4. Email Automations: Daily deadline reminders and weekly wrap-up emails using Vercel Crons.
 5. Optimistic Updates: Instant UI updates using Zustand global state.
+6. Admin Dashboard: Dedicated protected route for user management and broadcast emails.
 
 ## Architecture
-Vector uses a hybrid data fetching strategy. Server Actions are utilized for secure, heavy mutations and external API integrations, while direct Supabase Client queries handle client-side data fetching protected by strict RLS policies.
+Vector uses a hybrid data fetching strategy. Server Actions are utilized for secure, heavy mutations and external API integrations, while direct Supabase Client queries handle client-side data fetching protected by strict RLS policies. Background notifications are handled natively via Vercel Crons.
 
 Repository: https://github.com/PRODHOSH/vector
 Website: https://vector.prodhosh.me
+API Docs: https://vector.prodhosh.me/api-docs

@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard/', '/api/'],
+      disallow: ['/dashboard/', '/admin/', '/api/', '/auth/'],
     },
     sitemap: 'https://vector.prodhosh.me/sitemap.xml',
   };

@@ -67,14 +67,20 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
     }
   );
 
+  const [createPriority, setCreatePriority] = useState("Medium");
+  const [editPriority, setEditPriority] = useState("Medium");
+
   const handleCreateTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    formData.set("priority", createPriority);
 
     const dueDate = formData.get("due_date") as string;
     if (dueDate) {
       const d = new Date(dueDate);
-      formData.set("dueDateISO", d.toISOString());
+      if (!isNaN(d.getTime())) {
+        formData.set("dueDateISO", d.toISOString());
+      }
     }
 
     const ok = await runCreateTask(() => createTask(formData), "Task created");
@@ -88,11 +94,14 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
     e.preventDefault();
     if (!editTaskData) return;
     const formData = new FormData(e.currentTarget);
+    formData.set("priority", editPriority);
 
     const dueDate = formData.get("due_date") as string;
     if (dueDate) {
       const d = new Date(dueDate);
-      formData.set("dueDateISO", d.toISOString());
+      if (!isNaN(d.getTime())) {
+        formData.set("dueDateISO", d.toISOString());
+      }
     }
 
     const ok = await runUpdateTask(() => updateTask(editTaskData.id, formData), "Task updated");
@@ -188,7 +197,7 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
                 </div>
                 <div className="space-y-2">
                   <Label>Priority</Label>
-                  <Select name="priority" defaultValue="Medium">
+                  <Select name="priority" value={createPriority} onValueChange={setCreatePriority}>
                     <SelectTrigger><SelectValue placeholder="Select priority" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Low">Low</SelectItem>
@@ -250,7 +259,10 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
                     draggable
                     onDragStart={() => setDraggedTaskId(task.id)}
                     onDragEnd={() => setDraggedTaskId(null)}
-                    onClick={() => setEditTaskData(task)}
+                    onClick={() => {
+                      setEditTaskData(task);
+                      setEditPriority(task.priority.charAt(0).toUpperCase() + task.priority.slice(1));
+                    }}
                     className={cn(
                       "group flex flex-col gap-2 rounded-lg border border-border bg-card p-3.5 shadow-sm hover:shadow-md transition-all cursor-pointer active:cursor-grabbing",
                       draggedTaskId === task.id && "opacity-40"
@@ -261,7 +273,11 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
                       <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 -mt-1 -mr-1">
                         <Button
                           variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground"
-                          onClick={(e) => { e.stopPropagation(); setEditTaskData(task); }}
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            setEditTaskData(task);
+                            setEditPriority(task.priority.charAt(0).toUpperCase() + task.priority.slice(1));
+                          }}
                         >
                           <Edit2 className="h-3 w-3" />
                         </Button>
@@ -340,7 +356,10 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
             </TableHeader>
             <TableBody>
               {filteredTasks.map(task => (
-                <TableRow key={task.id} className="cursor-pointer" onClick={() => setEditTaskData(task)}>
+                <TableRow key={task.id} className="cursor-pointer" onClick={() => {
+                  setEditTaskData(task);
+                  setEditPriority(task.priority.charAt(0).toUpperCase() + task.priority.slice(1));
+                }}>
                   <TableCell className="font-medium">{task.title}</TableCell>
                   <TableCell>
                     <Badge variant={task.priority === "high" ? "destructive" : task.priority === "medium" ? "default" : "secondary"} className="capitalize">
@@ -370,7 +389,11 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
                     <div className="flex items-center justify-end gap-1">
                       <Button
                         variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                        onClick={(e) => { e.stopPropagation(); setEditTaskData(task); }}
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          setEditTaskData(task);
+                          setEditPriority(task.priority.charAt(0).toUpperCase() + task.priority.slice(1));
+                        }}
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>
@@ -421,7 +444,7 @@ export function TasksClient({ initialTasks: tasks }: { initialTasks: any[] }) {
                 </div>
                 <div className="space-y-2">
                   <Label>Priority</Label>
-                  <Select name="priority" defaultValue={editTaskData.priority.charAt(0).toUpperCase() + editTaskData.priority.slice(1)}>
+                  <Select name="priority" value={editPriority} onValueChange={setEditPriority}>
                     <SelectTrigger><SelectValue placeholder="Select priority" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Low">Low</SelectItem>
