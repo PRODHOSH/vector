@@ -43,4 +43,7 @@ next-env.d.ts
 # referencess
 PROBLEM.md
 /scripts
-config.bat
+
+# env files
+.env*
+!.env.example
